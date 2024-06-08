@@ -1,258 +1,216 @@
-import React, { useState } from 'react';
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import { View, Text, Image, StyleSheet, TextInput,TouchableOpacity,  ScrollView, Button } from 'react-native';
-import {
-  responsiveHeight,
-  responsiveFontSize,
-  responsiveWidth,
-  responsiveScreenFontSize,
-  
-} from 'react-native-responsive-dimensions';
+import React, { useState, useEffect } from 'react';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import Lowerbar from './Lowerbar';
-// import Bar from './bar';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import axios from 'axios';
-function User() {
+import { useNavigation } from '@react-navigation/native';
 
+function User() {
   const token = useSelector(state => state.user.userData.token);
   const [orders, setOrders] = useState([]);
   const config = {
     headers: {
-        'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`
     }
-  }
-  useEffect(() => {       
-    axios.get(`http://13.49.252.90/api/users/orders`,config).then((response) =>{
-      console.log(response.data);
-      setOrders(response.data.orders)
-    }). catch ((error) => {
-    console.error('Error fetching apis:', error);
-  })
-}, []);
+  };
+  const navigation = useNavigation();
+  useEffect(() => {
+    axios.get(`http://13.49.252.90/api/users/orders`, config)
+      .then(response => {
+        console.log(response.data);
+        setOrders(response.data.orders);
+      })
+      .catch(error => {
+        console.error('Error fetching APIs:', error);
+      });
+  }, []);
+
+  const OrderItem = ({ order }) => {
+    // Parsing date and time from the string "created_at": "18:10 06-05-2024"
+    const [time, date] = order.created_at.split(' ');
+    const [hours, minutes] = time.split(':');
+    const [day, month, year] = date.split('-');
+    const formattedDate = `${day} ${monthNames[parseInt(month) - 1]} ${year}`;
+    const formattedTime = `${formatAMPM(hours, minutes)}`;
+
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate('screen15', { order })}>
+      <View style={styles.orderItem}>
+        <View style={styles.row}>
+          <Text style={styles.price}>Rs. {order.total}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.info}>Date</Text>
+          <Text style={styles.info}>Time</Text>
+          <Text style={styles.info}>Status</Text>
+        </View>
+        <View style={styles.row}>
+          <Text>{formattedDate}</Text>
+          <Text>{formattedTime}</Text>
+          <Text style={order.status === 'Completed' ? styles.completed : styles.cancelled}>
+            {order.status}
+          </Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.orderNumber}>Order # {order.id}</Text>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>View Details</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </TouchableOpacity>
+    );
+  };
+
+  const formatAMPM = (hours, minutes) => {
+    let hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12;
+    hour = hour ? hour : 12; // the hour '0' should be '12'
+    return `${hour}:${minutes} ${ampm}`;
+  };
+
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+
   return (
-  <View style={{height:responsiveHeight(100), backgroundColor:"#9c2bb3",}}> 
+    <View style={{ height: responsiveHeight(100), backgroundColor: "#9c2bb3" }}>
       <View style={style.container}>
-
         <View style={style.circle}>
-          <AntDesign name='user' size={60} color='black'/> 
+          <AntDesign name='user' size={60} color='black' />
         </View>
-
         <View style={style.text}>
-          <Text style={{fontSize:25,fontWeight:500,color:"black"}}>Shilpa Kingrani</Text>
-          <Text style={{fontSize:18,fontWeight:400,color:"gray"}}>03312026865</Text>
+          <Text style={{ fontSize: 25, fontWeight: '500', color: "black" }}>Shilpa Kingrani</Text>
+          <Text style={{ fontSize: 18, fontWeight: '400', color: "gray" }}>03312026865</Text>
         </View>
-
-        <View style={style.boxcontainer}>
-          <View style={style.box}>
-            <Text style={{fontSize:18,fontWeight:"600",color:"blue"}}>29</Text>
-            <Text style={{fontWeight:400,fontSize:19,color:"gray"}}>Wish list</Text>
+        <ScrollView>
+          <View style={style.boxcontainer}>
+            <View style={style.box}>
+              <Text style={{ fontSize: 18, fontWeight: "600", color: "blue" }}>29</Text>
+              <Text style={{ fontWeight: '400', fontSize: 19, color: "gray" }}>Wish list</Text>
+            </View>
+            <View style={style.box}>
+              <Text style={{ fontSize: 18, fontWeight: "600", color: "blue" }}>1</Text>
+              <Text style={{ fontWeight: '400', fontSize: 19, color: "gray" }}>Total Orders</Text>
+            </View>
           </View>
-          <View style={style.box}>
-            <Text style={{fontSize:18,fontWeight:"600",color:"blue"}}>1</Text>
-            <Text style={{fontWeight:400,fontSize:19,color:"gray"}}>Total Orders</Text>
-          </View>
+          <Text style={{ fontSize: 26, fontWeight: "600", padding: 15, color: "black" }}>Recent Orders</Text>
+          <FlatList
+            data={orders}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item }) => <OrderItem order={item} />}
+            contentContainerStyle={style.recentOrders}
+          />
+          <View style={{ flex: 1 }}></View>
+        </ScrollView>
       </View>
-           
-        <Text style={{fontSize:26,fontWeight:"600",padding:15,color:"black"}}>Recent Orders</Text>
-        
-          <ScrollView style={{flex:1}} contentContainerStyle={style.recentOrders}>
-
-          {orders.map((order, index) => (
-                      <View style={style.order}>
-                      <View style={style.left}>
-                        {/* <Image source={{uri: order.products[0]}}style={{  width: "100%",height:"100%",borderRadius:8}}/> */}
-                      </View>
-                      <View style={style.right}>
-                        <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price Rs {order.total}</Text>
-                        <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>{order.products[0].name}</Text>
-                      </View>  
-                    </View>
-        ))}
-
-
-            {/* <View style={style.order}>
-              <View style={style.left}>
-                <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
-              </View>
-              <View style={style.right}>
-                <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
-                <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
-              </View>  
-            </View>
-
-            <View style={style.order}>
-              <View style={style.left}>
-                <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
-              </View>
-              <View style={style.right}>
-                <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
-                <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
-              </View>  
-            </View>
-
-            <View style={style.order}>
-              <View style={style.left}>
-                <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
-              </View>
-              <View style={style.right}>
-                <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
-                <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
-              </View>  
-            </View>
-
-            <View style={style.order}>
-              <View style={style.left}>
-                <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
-              </View>
-              <View style={style.right}>
-                <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
-                <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
-              </View>  
-            </View>
-
-            <View style={style.order}>
-              <View style={style.left}>
-                <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
-              </View>
-              <View style={style.right}>
-                <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
-                <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
-              </View>  
-            </View>
-
-            <View style={style.order}>
-              <View style={style.left}>
-                <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
-              </View>
-              <View style={style.right}>
-                <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
-                <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
-              </View>  
-            </View>
-
-            <View style={style.order}>
-              <View style={style.left}>
-                <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
-              </View>
-              <View style={style.right}>
-                <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
-                <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
-              </View>  
-            </View>
-
-            <View style={style.order}>
-              <View style={style.left}>
-                <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
-              </View>
-              <View style={style.right}>
-                <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
-                <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
-              </View>  
-            </View> */}
-          </ScrollView>
-          <View style={{flex:1}}></View>
-      </View>
-      <Lowerbar/>
-  </View>
-    
-  )
-};
-
+      <Lowerbar />
+    </View>
+  );
+}
 
 const style = StyleSheet.create({
-    container:{
-      backgroundColor:"white",
-      width:responsiveWidth(100),
-      height: responsiveHeight(100),
-      alignSelf:"center",
-      top:responsiveHeight(10),
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30
-},
-
-circle:{
-  width:responsiveHeight(15),
-  height:responsiveHeight(15),
-  backgroundColor:"#a9a9a9",
-  borderRadius:100,
-  alignSelf:"center",
-  bottom:responsiveHeight(8),
-  borderColor:"white",
-  borderWidth:4,
-  alignItems:"center",
-  justifyContent:"center"  
-},
-    text:{ 
-    alignSelf:"center",
-    // backgroundColor:"red",
-    width:responsiveWidth(70),
-    height:responsiveHeight(10),
-    bottom:responsiveHeight(5),
-    alignItems:"center",
-    justifyContent:"space-evenly"
-
-    },
-    boxcontainer:{
-    // backgroundColor:"red",
-    height:responsiveHeight(13),
-    width:responsiveWidth(90),
-    alignSelf:"center",
-    bottom:responsiveHeight(3),
-    flexDirection:"row",
-    justifyContent:"space-around",
-    alignItems:"center"
-    },
-  box:{
-    backgroundColor:"white",
-    height:responsiveHeight(10),
-    width:responsiveWidth(40),
-    shadowColor: '#gray',
+  container: {
+    backgroundColor: "white",
+    width: responsiveWidth(100),
+    height: responsiveHeight(100),
+    alignSelf: "center",
+    top: responsiveHeight(10),
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30
+  },
+  circle: {
+    width: responsiveHeight(15),
+    height: responsiveHeight(15),
+    backgroundColor: "#a9a9a9",
+    borderRadius: 100,
+    alignSelf: "center",
+    bottom: responsiveHeight(8),
+    borderColor: "white",
+    borderWidth: 4,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  text: {
+    alignSelf: "center",
+    width: responsiveWidth(70),
+    height: responsiveHeight(10),
+    bottom: responsiveHeight(5),
+    alignItems: "center",
+    justifyContent: "space-evenly"
+  },
+  boxcontainer: {
+    height: responsiveHeight(13),
+    width: responsiveWidth(90),
+    alignSelf: "center",
+    bottom: responsiveHeight(3),
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+  box: {
+    backgroundColor: "white",
+    height: responsiveHeight(10),
+    width: responsiveWidth(40),
+    shadowColor: 'gray',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3,
-    elevation:7,
-    borderRadius:16,
-    alignItems:"center",
-    justifyContent:"center"
-    },
-  recentOrders:{
-  width:responsiveWidth(90),
-  // height:responsiveHeight(100),
-  alignSelf:"center",
-  gap: 10,
+    elevation: 7,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  recentOrders: {
+    width: responsiveWidth(90),
+    alignSelf: "center",
+    gap: 10,
+  }
+});
 
+const styles = StyleSheet.create({
+  orderItem: {
+    padding: 15,
+    borderRadius: 8,
+    backgroundColor: '#f9f9f9',
+    marginBottom: 10,
+    elevation: 2,
   },
-  order:{
-    width:responsiveWidth(85),
-    height:responsiveHeight(14),
-    // backgroundColor:"green",
-    alignSelf:"center",
-    bottom:responsiveHeight(1),
-    justifyContent:"space-around",
-    flexDirection:"row",
-    shadowOpacity: 0.25,
-    shadowRadius: 3,
-    elevation:7,
-    borderRadius:16,
-    backgroundColor:"white"
-   
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
   },
-  left:{
-    // backgroundColor:"blue",
-    height:responsiveHeight(12),
-    width:responsiveWidth(42),
-    alignSelf:"center",
-    alignItems:"center",
-    justifyContent:"center"
+  price: {
+    color: '#007BFF',
+    fontWeight: 'bold',
   },
-  right:{
-    // backgroundColor:"pink",
-    height:responsiveHeight(12),
-    width:responsiveWidth(35),
-    alignSelf:"center",
-    justifyContent:"space-around"
+  info: {
+    fontWeight: 'bold',
+    color: '#555',
   },
-})
+  completed: {
+    color: 'green',
+  },
+  cancelled: {
+    color: 'red',
+  },
+  orderNumber: {
+    color: '#555',
+  },
+  button: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+  },
+});
 
-export default User
+export default User;

@@ -17,8 +17,8 @@ import { login } from '../userSlice'
 export default function SignInScreen() {
    const [error ,setError]= useState('');
   const [data ,setData]= useState({
-     email:'',
-     password:''
+     email:'shilpa@gmail.com',
+     password:'password'
   })
   const navigation=useNavigation();
   const dispatch = useDispatch();
@@ -98,11 +98,11 @@ export default function SignInScreen() {
       <Text style={styles.forgotpass}>Forgot password?</Text>
         
 
-        <View style={styles.buttonbox}>
           <TouchableOpacity style={styles.signinbutton}>
+        <View style={styles.buttonbox}>
             <Text style={styles.signin} onPress={SignIn}>Sign In</Text>
-          </TouchableOpacity>
         </View>
+          </TouchableOpacity>
        <Text style={styles.register}>Don't have an account yet? <Text style={{color:"#9c2bb3"}} onPress={()=>navigation.navigate("screen4")}>Register</Text></Text>
         
       </View>
