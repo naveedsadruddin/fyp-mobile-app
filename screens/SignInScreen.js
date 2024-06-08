@@ -26,7 +26,7 @@ export default function SignInScreen() {
   const SignIn = () => {
     try {
       console.log('here')
-       axios.post("http://13.49.252.90:8000/api/user/login", data).then((response) =>{
+       axios.post("http://13.49.252.90/api/user/login", data).then((response) =>{
         console.log(response.data)
   
         if (response.data.error) {

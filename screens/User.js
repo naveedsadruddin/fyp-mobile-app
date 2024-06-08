@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { View, Text, Image, StyleSheet, TextInput,TouchableOpacity,  ScrollView, Button } from 'react-native';
 import {
@@ -10,8 +10,26 @@ import {
 } from 'react-native-responsive-dimensions';
 import Lowerbar from './Lowerbar';
 // import Bar from './bar';
-
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import axios from 'axios';
 function User() {
+
+  const token = useSelector(state => state.user.userData.token);
+  const [orders, setOrders] = useState([]);
+  const config = {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+  }
+  useEffect(() => {       
+    axios.get(`http://13.49.252.90/api/users/orders`,config).then((response) =>{
+      console.log(response.data);
+      setOrders(response.data.orders)
+    }). catch ((error) => {
+    console.error('Error fetching apis:', error);
+  })
+}, []);
   return (
   <View style={{height:responsiveHeight(100), backgroundColor:"#9c2bb3",}}> 
       <View style={style.container}>
@@ -40,7 +58,20 @@ function User() {
         
           <ScrollView style={{flex:1}} contentContainerStyle={style.recentOrders}>
 
-            <View style={style.order}>
+          {orders.map((order, index) => (
+                      <View style={style.order}>
+                      <View style={style.left}>
+                        {/* <Image source={{uri: order.products[0]}}style={{  width: "100%",height:"100%",borderRadius:8}}/> */}
+                      </View>
+                      <View style={style.right}>
+                        <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price Rs {order.total}</Text>
+                        <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>{order.products[0].name}</Text>
+                      </View>  
+                    </View>
+        ))}
+
+
+            {/* <View style={style.order}>
               <View style={style.left}>
                 <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
               </View>
@@ -118,17 +149,7 @@ function User() {
                 <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
                 <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
               </View>  
-            </View>
-
-            <View style={style.order}>
-              <View style={style.left}>
-                <Image source={require("../assets/images/image-Product.jpg")}style={{  width: "100%",height:"100%",borderRadius:8}}/>
-              </View>
-              <View style={style.right}>
-                <Text style={{color:"blue",fontWeight:"600",fontSize:18}}>price. $299,43</Text>
-                <Text style={{fontWeight:"500",fontSize:15,color:"black"}}>Nike Air Max 270 React ENG</Text>
-              </View>  
-            </View>
+            </View> */}
           </ScrollView>
           <View style={{flex:1}}></View>
       </View>

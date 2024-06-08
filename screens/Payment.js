@@ -9,7 +9,9 @@ import {
   responsiveScreenFontSize,
   
 } from 'react-native-responsive-dimensions';
+import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 function Payment() {
     const [isAddress, setIsAddress]=useState(false);
@@ -17,8 +19,27 @@ function Payment() {
     const toggleAddress=()=>{
         setIsAddress(!isAddress)
     }
+
+  const cart = useSelector(state => state.cart);
+  const token = useSelector(state => state.user.userData.token);
   const navigation = useNavigation();
 
+  const config = {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+  }
+  console.log(config)
+  const handlePlaceOrder = () => {
+    axios.post(`http://13.49.252.90/api/users/orders`, cart , config)
+    .then((response) => {
+      console.log(response.data.message)
+      navigation.navigate("screen6")
+    })
+    .catch((error) => {
+      console.error('Error placing order:', error);
+    });
+  }
   return (
     <>
     <ScrollView contentContainerStyle={{flex:1, gap:16}}>
@@ -47,9 +68,9 @@ function Payment() {
     
     <View style={style.totalPrice}>
       <Text style={{fontSize:18,fontWeight:"500",color:"black"}}>Total Price</Text>
-      <Text style={{fontSize:18,fontWeight:"bold",color:"black"}}>$300</Text>
+      <Text style={{fontSize:18,fontWeight:"bold",color:"black"}}>Rs {cart.totalAmount}</Text>
     </View>
-    <TouchableOpacity style={style.orderButton}>
+    <TouchableOpacity style={style.orderButton} onPress={handlePlaceOrder}>
       <Text style={{alignSelf:'center',color:"white",fontSize:19,fontWeight:"700"}}>Order Now</Text>
     </TouchableOpacity>
   </View>

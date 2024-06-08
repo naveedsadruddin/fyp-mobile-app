@@ -57,7 +57,7 @@ function ReelComponent({ reel, handleLike }) {
                 </Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.right} onPress={() => navigation.navigate('screen8', { id: reel.product_id})}>
+          <TouchableOpacity style={styles.right} onPress={() => navigation.navigate('screen8', { id: reel.id})}>
             <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }} >See Product</Text>
           </TouchableOpacity>
         </View>
@@ -95,7 +95,7 @@ function ReelC() {
     }
   }
   useEffect(() => {       
-    axios.get("http://13.49.252.90:8000/api/users/reels", config)
+    axios.get("http://13.49.252.90/api/users/reels", config)
      .then((response) => {
        console.log(response.data);
        console.log("useeffect")

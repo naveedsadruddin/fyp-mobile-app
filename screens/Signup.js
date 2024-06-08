@@ -25,7 +25,7 @@ export default function Signup() {
   const navigation=useNavigation();
   const Signup = () => {
     console.log('here')
-    axios.post("http://13.49.252.90:8000/api/user/register", data).then((response) =>{
+    axios.post("http://13.49.252.90/api/user/register", data).then((response) =>{
       console.log('inside')
       console.log(response)
 

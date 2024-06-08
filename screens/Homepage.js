@@ -55,7 +55,7 @@ function Homepage() {
   useEffect(() => {
     
     axios
-      .get('http://13.49.252.90:8000/api/users/products', config)
+      .get('http://13.49.252.90/api/users/products', config)
       .then(response => {
         console.log(response.data);
         setProducts(response.data.products);
@@ -69,7 +69,7 @@ function Homepage() {
     return products.map(element => {
       return (
         <TouchableOpacity
-          onPress={() => navigation.navigate('screen8', {id: element.id})}>
+          onPress={() => navigation.navigate('screen8', {id: element.id})} key={element.id}>
           <View key={element.id} style={style.content}>
             <Image
               source={{uri: element.images[0].image_uri}}
@@ -89,7 +89,7 @@ function Homepage() {
     return fetured.map(element => {
       return (
         <TouchableOpacity
-          onPress={() => navigation.navigate('screen8', {id: element.id})}>
+          onPress={() => navigation.navigate('screen8', {id: element.id})} key={element.id}>
           <View style={style.recomcontainer} key={element.id}>
             <Image
               source={{uri: element.images[0].image_uri}}

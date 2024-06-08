@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FlatList from "flatlist-react/lib";
@@ -9,6 +9,8 @@ import Lowerbar from './Lowerbar';
 
 const UserScreen = () => {
   const navigation = useNavigation();
+  const [orders , setOrders] = useState([]);
+
   const Users = [
     {
       id: 1,

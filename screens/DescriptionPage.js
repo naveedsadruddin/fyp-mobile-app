@@ -14,24 +14,38 @@ import {
   responsiveScreenFontSize,
   
 } from 'react-native-responsive-dimensions';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
+import { useSelector } from 'react-redux';
+import { addItem, removeItem } from '../cartSlice';
 import Lowerbar from './Lowerbar'
 
 function Updatedpage({route }) {
   const { id } = route.params;
+  const dispatch = useDispatch();
   const [product,setProduct]=useState({});
   const navigation = useNavigation();
   // const [token,setToken]=useState('81|i4Jy1dqMZx5OILS1aJgFwzYjBC91PEamSISqw3xQ14540414');
   const token = useSelector(state => state.user.userData.token);
-
+  const addToCart = () => {
+    dispatch(addItem({
+      id : product?.id,
+      quantity : 1,
+      name : product?.name,
+      image : product?.images[0]?.image_uri,
+      price : product?.sale_price  
+    }))
+  }
+  const removeFromCart = () =>{
+    dispatch(removeItem(product.id))
+  }
   const config = {
     headers: {
         'Authorization': `Bearer ${token}`
     }
   }
   useEffect(() => {       
-    axios.get(`http://13.49.252.90:8000/api/users/products/${id}`, config)
+    axios.get(`http://13.49.252.90/api/users/products/${id}`, config)
      .then((response) => {
       console.log(response.data.product)
        setProduct(response.data.product);
@@ -92,7 +106,8 @@ function Updatedpage({route }) {
                      </Text>
                    <View style={style.btnbox}>
                      <TouchableOpacity style={style.btn} onPress={()=>navigation.navigate("screen9")}><Text style={{color:"white",fontWeight:"700"}}>Buy Now</Text></TouchableOpacity>
-                     <TouchableOpacity onPress={() => navigation.navigate("screen9")} style={style.btn}><Text style={{color:"white",fontWeight:"700"}}>Add to cart</Text></TouchableOpacity>
+                     <TouchableOpacity onPress={addToCart} style={style.btn}><Text style={{color:"white",fontWeight:"700"}}>Add to cart</Text></TouchableOpacity>
+                     <TouchableOpacity onPress={removeFromCart} style={style.btn}><Text style={{color:"white",fontWeight:"700"}}>Add to faviourate</Text></TouchableOpacity>
                    </View>
            
      
