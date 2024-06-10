@@ -45,7 +45,7 @@ function Updatedpage({route }) {
     }
   }
   useEffect(() => {       
-    axios.get(`http://13.49.252.90/api/users/products/${id}`, config)
+    axios.get(`http://192.168.2.107:8000/api/users/products/${id}`, config)
      .then((response) => {
       console.log(response.data.product)
        setProduct(response.data.product);

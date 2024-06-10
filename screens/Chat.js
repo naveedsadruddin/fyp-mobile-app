@@ -18,46 +18,53 @@ import {
   responsiveScreenFontSize,
 } from 'react-native-responsive-dimensions';
 import ChatHeader from './ChatHeader';
+import { useSelector } from 'react-redux';
+import { io } from 'socket.io-client';
+import axios from 'axios';
+const socket = io('http://192.168.2.107:4000');
 const Chat = ({route}) => {
-  const {data} = route.params;
+  const userId  =  useSelector(state => state.user.userData.user.id);
+  const {name , chatId, receiver_id} = route.params;
   const [messages, setMessages] = useState([]);
+  const setMessages1 = () => {
+  axios.get(`http://192.168.2.107:4000/messages/${chatId}`)
+  .then((response) => {
+    const transformedMessages = response.data.map(msg => ({
+      _id: msg.id,
+      text: msg.message,
+      createdAt: new Date(msg.createdAt),
+      user: {
+        _id: msg.sender_id,
+      }
+    }));
+    setMessages(transformedMessages)
+    console.log(messages)
+  })
+  .catch((error) => {
+
+  });
+
+}
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello! How can I assist you?',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native Bot",
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]);
+    setMessages1()
+    socket.on(`receiveMessage-${chatId}`, (newMessage) => { 
+      const newMessages ={
+                  _id: Math.round(Math.random() * 1000000),
+                  text: newMessage.message,
+                  createdAt: newMessage.date,
+                  user: {
+                    _id: newMessage.sender_id,
+                  },
+                };
+      setMessages(previousMessages =>
+     GiftedChat.append(previousMessages, newMessages),
+     );
+  });
   }, []);
 
   const onSend = (newMessages = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, newMessages),
-    );
-
-    // Simulate bot response after 1 second
-    setTimeout(() => {
-      setMessages(previousMessages =>
-        GiftedChat.append(previousMessages, [
-          {
-            _id: Math.round(Math.random() * 1000000),
-            text: 'This is a mock response.',
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: "React Native Bot",
-              avatar: 'https://placeimg.com/140/140/any',
-            },
-          },
-        ]),
-      );
-    }, 1000);
+    console.log(newMessages)
+    socket.emit('sendMessage', { sender_id: userId, receiver_id: receiver_id, message : newMessages[0].text });
   };
   const changeBubble = props => {
     return (
@@ -81,7 +88,7 @@ const Chat = ({route}) => {
 
   return (
     <>
-      <ChatHeader user={data} />
+      <ChatHeader name={name} />
 
       <GiftedChat
         renderBubble={changeBubble}
@@ -98,8 +105,9 @@ const Chat = ({route}) => {
         messages={messages}
         onSend={newMessages => onSend(newMessages)}
         user={{
-          _id: 1,
-        }}
+          _id: userId,
+         
+        }}  
       />
     </>
   );

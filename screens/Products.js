@@ -35,7 +35,7 @@ function Products({route }) {
 }
 
   useEffect(() => {       
-    axios.get(`http://13.49.252.90/api/users/products?search=${searchInput}`,config).then((response) =>{
+    axios.get(`http://192.168.2.107:8000/api/users/products?search=${searchInput}`,config).then((response) =>{
       console.log(response.data);
       setProducts(response.data.products)
     }). catch ((error) => {
@@ -44,7 +44,7 @@ function Products({route }) {
 }, []);
 
 const handleSearch =  () => {
-  axios.get(`http://13.49.252.90/api/users/products?search=${searchInput}`,config).then((response) =>{
+  axios.get(`http://192.168.2.107:8000/api/users/products?search=${searchInput}`,config).then((response) =>{
       console.log(response.data);
       setProducts(response.data.products)
     }). catch ((error) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FlatList from "flatlist-react/lib";
@@ -6,76 +6,103 @@ import { responsiveHeight, responsiveWidth } from "react-native-responsive-dimen
 import { horizontal } from "react-native-swiper-flatlist/src/themes";
 import {useNavigation} from '@react-navigation/native';
 import Lowerbar from './Lowerbar';
+import { useSelector } from "react-redux";
+import { io } from "socket.io-client";
+import axios from "axios";
+const socket = io('http://192.168.2.107:4000');
 
 const UserScreen = () => {
   const navigation = useNavigation();
-  const [orders , setOrders] = useState([]);
+  const userId  =  useSelector(state => state.user.userData.user.id);
+ const profileImage = require("../assets/users/user1.jpg");
+  const [chatList, setChatList] = useState([]);
+  const setChatList1 = () => {
+    axios
+      .get(`http://192.168.2.107:4000/chat-listing/${userId}`)
+      .then((response) => {
+        console.log(response.data)
+          setChatList(response.data);
+      })
+      .catch((error) => {
 
-  const Users = [
-    {
-      id: 1,
-      userName: "sughand kingrani",
-      userProfile: require("../assets/users/user1.jpg"),
-      messageTime: "4 mins ago",
-      messageText: "Hey there, I'm using Reel It Chatbot",
-    },
-    {
-      id: 2,
-      userName: "Naveed saddurdin",
-      userProfile: require("../assets/users/user3.jpg"),
-      messageTime: "2 mins ago",
-      messageText: "Hey there, I'm using Reel It Chatbot",
-    },
-    {
-        id: 3,
-        userName: "nimarta kingrani",
-        userProfile: require("../assets/users/user4.jpg"),
-        messageTime: "3 mins ago",
-        messageText: "Hey there, I'm using Reel It Chatbot",
-      },
-      {
-        id: 4,
-        userName: "Ayush Veerban",
-        userProfile: require("../assets/users/user2.jpg"),
-        messageTime: "1 mins ago",
-        messageText: "Hey there, I'm using Reel It Chatbot",
-      },
-      {
-        id: 5,
-        userName: "vinay choithani",
-        userProfile: require("../assets/users/user1.jpg"),
-        messageTime: "Just Now",
-        messageText: "Hey there, I'm using Reel It Chatbot",
-      },
-      {
-        id: 6,
-        userName: "sindhu kukreja",
-        userProfile: require("../assets/users/user2.jpg"),
-        messageTime: "1 mins ago",
-        messageText: "Hey there, I'm using Reel It Chatbot",
-      },
-      {
-        id: 7,
-        userName: "anusha kingrani",
-        userProfile: require("../assets/users/user1.jpg"),
-        messageTime: "Just Now",
-        messageText: "Hey there, I'm using Reel It Chatbot",
-      },
-      {
-        id: 8,
-        userName: "nancy kingrani",
-        userProfile: require("../assets/users/user2.jpg"),
-        messageTime: "1 mins ago",
-        messageText: "Hey there, I'm using Reel It Chatbot",
-      },
-      {
-        id: 9,
-        userName: "aman",
-        userProfile: require("../assets/users/user1.jpg"),
-        messageTime: "Just Now",
-        messageText: "Hey there, I'm using Reel It Chatbot",
-      }
-  ];
+      });
+    }
+  const joinChat = () => {
+    socket.emit('join', userId);
+  };
+  useEffect(() => {
+    setChatList1();
+    joinChat();
+    socket.on(`chat-${userId}`, (newMessage) => { 
+        setChatList1();
+    });
+    console.log(chatList);
+}, []);
+  // const Users = [
+  //   {
+  //     id: 1,
+  //     userName: "sughand kingrani",
+  //     userProfile: require("../assets/users/user1.jpg"),
+  //     messageTime: "4 mins ago",
+  //     messageText: "Hey there, I'm using Reel It Chatbot",
+  //   },
+  //   {
+  //     id: 2,
+  //     userName: "Naveed saddurdin",
+  //     userProfile: require("../assets/users/user3.jpg"),
+  //     messageTime: "2 mins ago",
+  //     messageText: "Hey there, I'm using Reel It Chatbot",
+  //   },
+  //   {
+  //       id: 3,
+  //       userName: "nimarta kingrani",
+  //       userProfile: require("../assets/users/user4.jpg"),
+  //       messageTime: "3 mins ago",
+  //       messageText: "Hey there, I'm using Reel It Chatbot",
+  //     },
+  //     {
+  //       id: 4,
+  //       userName: "Ayush Veerban",
+  //       userProfile: require("../assets/users/user2.jpg"),
+  //       messageTime: "1 mins ago",
+  //       messageText: "Hey there, I'm using Reel It Chatbot",
+  //     },
+  //     {
+  //       id: 5,
+  //       userName: "vinay choithani",
+  //       userProfile: require("../assets/users/user1.jpg"),
+  //       messageTime: "Just Now",
+  //       messageText: "Hey there, I'm using Reel It Chatbot",
+  //     },
+  //     {
+  //       id: 6,
+  //       userName: "sindhu kukreja",
+  //       userProfile: require("../assets/users/user2.jpg"),
+  //       messageTime: "1 mins ago",
+  //       messageText: "Hey there, I'm using Reel It Chatbot",
+  //     },
+  //     {
+  //       id: 7,
+  //       userName: "anusha kingrani",
+  //       userProfile: require("../assets/users/user1.jpg"),
+  //       messageTime: "Just Now",
+  //       messageText: "Hey there, I'm using Reel It Chatbot",
+  //     },
+  //     {
+  //       id: 8,
+  //       userName: "nancy kingrani",
+  //       userProfile: require("../assets/users/user2.jpg"),
+  //       messageTime: "1 mins ago",
+  //       messageText: "Hey there, I'm using Reel It Chatbot",
+  //     },
+  //     {
+  //       id: 9,
+  //       userName: "aman",
+  //       userProfile: require("../assets/users/user1.jpg"),
+  //       messageTime: "Just Now",
+  //       messageText: "Hey there, I'm using Reel It Chatbot",
+  //     }
+  // ];
 
 
   return (
@@ -96,13 +123,13 @@ const UserScreen = () => {
             <TextInput style={ styles.searchInput} placeholder="Search"/>
       </View>
         <ScrollView>
-            {Users.map(user => (
-                <TouchableOpacity style={styles.userContainer} onPress={()=>navigation.navigate("screen14",{data:user})} key={user.id}>
-                    <Image source={user.userProfile} style={styles.profileImage}/>
+            {chatList.map(chat => (
+                <TouchableOpacity style={styles.userContainer} onPress={()=>navigation.navigate("screen14",{chatId : chat.id ,receiver_id : chat.participant_user_id , name : chat.participant_user_name})} key={chat.id}>
+                    <Image source={profileImage} style={styles.profileImage}/>
                     <View style={styles.textContainer}>
-                        <Text style={styles.userName}>{user.userName}</Text>
-                        <Text style={styles.messageTime}>{user.messageTime}</Text>
-                        <Text style={styles.messageText}>{user.messageText}</Text>
+                        <Text style={styles.userName}>{chat.participant_user_name}</Text>
+                        <Text style={styles.messageTime}>{chat.time}</Text>
+                        <Text style={styles.messageText}>{chat.last_message}</Text>
                     </View>
                 </TouchableOpacity>
             ))}

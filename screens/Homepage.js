@@ -55,7 +55,7 @@ function Homepage() {
   useEffect(() => {
     
     axios
-      .get('http://13.49.252.90/api/users/products', config)
+      .get('http://192.168.2.107:8000/api/users/products', config)
       .then(response => {
         console.log(response.data);
         setProducts(response.data.products);

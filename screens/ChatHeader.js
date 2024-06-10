@@ -6,7 +6,7 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import { useNavigation } from '@react-navigation/native';
-function ChatHeader({user}) {
+function ChatHeader({name}) {
   const navigation=useNavigation()
   return (
     <View style={style.bar}>
@@ -15,15 +15,15 @@ function ChatHeader({user}) {
         </TouchableOpacity>
       <View style={style.right}>
         <View style={style.profile}>
-          <Image style={{width:"100%",height:"100%" ,borderRadius:50}} source={user.userProfile}/>
+          <Image style={{width:"100%",height:"100%" ,borderRadius:50}} source={require("../assets/users/user1.jpg")}/>
         </View>
         <View style={style.username}>
           <Text style={{color: 'white', fontWeight: '600', fontSize: 20}}>
-            {user.userName}
+            {name}
           </Text>
-          <Text style={{color: 'white', fontWeight: '400', fontSize: 16}}>
+          {/* <Text style={{color: 'white', fontWeight: '400', fontSize: 16}}>
             Active
-          </Text>
+          </Text> */}
         </View>
       </View>
     </View>

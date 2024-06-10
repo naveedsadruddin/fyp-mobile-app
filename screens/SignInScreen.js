@@ -17,7 +17,7 @@ import { login } from '../userSlice'
 export default function SignInScreen() {
    const [error ,setError]= useState('');
   const [data ,setData]= useState({
-     email:'shilpa@gmail.com',
+     email:'naveed1@gmail.com',
      password:'password'
   })
   const navigation=useNavigation();
@@ -26,7 +26,7 @@ export default function SignInScreen() {
   const SignIn = () => {
     try {
       console.log('here')
-       axios.post("http://13.49.252.90/api/user/login", data).then((response) =>{
+       axios.post("http://192.168.2.107:8000/api/user/login", data).then((response) =>{
         console.log(response.data)
   
         if (response.data.error) {

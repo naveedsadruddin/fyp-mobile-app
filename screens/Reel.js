@@ -33,7 +33,7 @@ const config = {
   }
 }
 useEffect(() => {       
- axios.get("http://13.49.252.90/api/users/reels", config)
+ axios.get("http://192.168.2.107:8000/api/users/reels", config)
   .then((response) => {
     console.log(response.data);
     console.log("useeffect")
