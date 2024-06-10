@@ -32,6 +32,7 @@ import Comment from "./screens/Comment"
 import { Provider } from 'react-redux';
 import OrderDetail from './screens/OrderDetail';
 import store from './store'; 
+import OrderConfirmationScreen from './screens/OrderConfirmation';
 
 
 function App() {
@@ -40,21 +41,22 @@ function App() {
     <Provider store={store}>
     <NavigationContainer>
     <Stack.Navigator initialRouteName='screen1'>
-        {/* <Stack.Screen name='screen1' component={Splash} options={{headerShown:false}}/>
+        <Stack.Screen name='screen1' component={Splash} options={{headerShown:false}}/>
         <Stack.Screen name='screen2' component={LandingPage} options={{headerShown:false}}/>
         <Stack.Screen name='screen3' component={Welcome} options={{headerShown:false}}/>
         <Stack.Screen name='screen4' component={Signup} options={{headerShown:false}}/>
         <Stack.Screen name='screen5' component={SignInScreen} options={{headerShown:false}}/>
         <Stack.Screen name='screen6' component={Homepage} options={{headerShown:false}}/>
         <Stack.Screen name='screen7' component={Products} options={{headerShown:false}}/>
-        <Stack.Screen name='screen8' component={DescriptionPage} options={{headerShown:false}}/> */}
-        {/* <Stack.Screen name='screen9' component={Cart} options={{headerShown:false}}/>
-        <Stack.Screen name='screen10' component={ReelC} options={{headerShown:false}}/> */}
+        <Stack.Screen name='screen8' component={DescriptionPage} options={{headerShown:false}}/>
+        <Stack.Screen name='screen9' component={Cart} options={{headerShown:false}}/>
+        <Stack.Screen name='screen10' component={ReelC} options={{headerShown:false}}/>
         <Stack.Screen name='screen11' component={User} options={{headerShown:false}}/>
-        {/* <Stack.Screen name='screen12' component={Payment} options={{headerShown:false}}/> */}
-        {/* <Stack.Screen name='screen13' component={UserScreen} options={{headerShown:false}}/> */}
-        {/* <Stack.Screen name='screen14' component={Chat} options={{headerShown:false}}/> */}
+        <Stack.Screen name='screen12' component={Payment} options={{headerShown:false}}/>
+         <Stack.Screen name='screen13' component={UserScreen} options={{headerShown:false}}/>
+         <Stack.Screen name='screen14' component={Chat} options={{headerShown:false}}/>
         <Stack.Screen name='screen15' component={OrderDetail} options={{headerShown:false}}/>
+        <Stack.Screen name='screen16' component={OrderConfirmationScreen} options={{headerShown:false}}/>
     </Stack.Navigator>
    {/* <Error/> */}
    {/* <User/> */}
@@ -64,7 +66,7 @@ function App() {
     {/* <Cart/> */}
     {/* <Chat/> */}
     {/* <Cartcomponent/> */}
-    {/* <UserScreen/> */}
+    {/* <OrderConfirmationScreen/> */}
     {/* <Homepage/> */}
     {/* <Comment/> */}
     {/* <EditProfile/> */}

@@ -34,7 +34,7 @@ function Payment() {
     axios.post(`http://13.49.252.90/api/users/orders`, cart , config)
     .then((response) => {
       console.log(response.data.message)
-      navigation.navigate("screen6")
+      navigation.navigate("screen16")
     })
     .catch((error) => {
       console.error('Error placing order:', error);
@@ -165,6 +165,7 @@ lowerContainer:{
     shadowOpacity: 0.1,
     shadowRadius: 30,
     elevation: 8,
+    bottom:responsiveHeight(5),
   },
   
   totalPrice:{

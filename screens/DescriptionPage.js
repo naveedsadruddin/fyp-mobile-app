@@ -87,32 +87,32 @@ function Updatedpage({route }) {
     <View style={style.wrapper} >
              
                  <Text style={style.productName}>{product?.name}</Text>
-                     <View style={style.star}>
+                     {/* <View style={style.star}>
                          < MaterialIcons name='star' size={18} color='yellow'/>
                          < MaterialIcons name='star' size={18} color='yellow'/>
                          < MaterialIcons name='star' size={18} color='yellow'/>
                          < MaterialIcons name='star' size={18} color='yellow'/>
                          < MaterialIcons name='star' size={18} color='gray'/>
-                     </View>
-                 <Text style={style.actualPrice}>RS {product?.sale_price}</Text>
+                     </View> */}
+                 <Text style={style.actualPrice}>Rs {product?.sale_price}</Text>
                    {/* <View style={style.price}>
                          <Text style={style.afterSalePrice}>RS {product.cost_price}</Text>
                          <Text style={style.redtxt}>24%</Text>
                  </View> */}
 
-                     <Text style={{color:"black",top:responsiveHeight(2.5),fontSize:15,fontWeight:"bold"}}>Description</Text>
-                       <Text style={{top:responsiveHeight(2.5)}} >
+                     <Text style={{color:"black",top:responsiveHeight(2.5),fontSize:20,fontWeight:"bold",paddingHorizontal:6}}>Description</Text>
+                       <Text style={{top:responsiveHeight(2.5), paddingHorizontal:7}} >
                          {product?.description}
                      </Text>
                    <View style={style.btnbox}>
                      <TouchableOpacity style={style.btn} onPress={()=>navigation.navigate("screen9")}><Text style={{color:"white",fontWeight:"700"}}>Buy Now</Text></TouchableOpacity>
                      <TouchableOpacity onPress={addToCart} style={style.btn}><Text style={{color:"white",fontWeight:"700"}}>Add to cart</Text></TouchableOpacity>
-                     <TouchableOpacity onPress={removeFromCart} style={style.btn}><Text style={{color:"white",fontWeight:"700"}}>Add to faviourate</Text></TouchableOpacity>
+
                    </View>
            
      
                  </View>
-     <View style={style.Container3}>
+     {/* <View style={style.Container3}>
       <Text style={{color:"blue",fontSize:17,fontWeight:"700",paddingHorizontal:(10)}}>REVIEWS</Text>
       <View style={style.content}>
        <View style={style.picture}></View>
@@ -151,7 +151,7 @@ function Updatedpage({route }) {
 
       </Text>
 
-     </View>
+     </View> */}
      </View>
    
        
@@ -303,22 +303,25 @@ const style=StyleSheet.create({
       fontWeight:"700",
       color:"black",
       top:responsiveHeight(1),
+      paddingHorizontal:7,
+      
     
   },
-  star:{
-    width:responsiveWidth(27),
-    height:responsiveHeight(2.5),
-    top:responsiveHeight(0.75),
-    flexDirection:"row",
-    gap:1,
+  // star:{
+  //   width:responsiveWidth(27),
+  //   height:responsiveHeight(2.5),
+  //   top:responsiveHeight(0.75),
+  //   flexDirection:"row",
+  //   gap:1,
       
-  },
+  // },
   
   actualPrice:{
     fontSize:18,
     fontWeight:"800",
     color:"black",
     top:responsiveHeight(1.5),
+    paddingHorizontal:7
       
   },
   price:{
@@ -341,21 +344,23 @@ const style=StyleSheet.create({
       fontSize:18
   },
   btnbox:{
-    width:responsiveWidth(48),
+    width:responsiveWidth(90),
     height:responsiveHeight(5.5),
     top:responsiveHeight(4.5),
-    justifyContent:"space-around",
+   alignSelf:"center",
     flexDirection:"row",
-
-    
+   alignItems:"center",
+   justifyContent:"space-evenly",
+   top:responsiveHeight(6)
   },
   btn:{
-    width:responsiveWidth(22),
-    height:responsiveHeight(3),
-    backgroundColor:"blue",
+    width:responsiveWidth(35),
+    height:responsiveHeight(5),
+  
+    backgroundColor:"#9c2bb3",
     alignItems:"center",
     justifyContent:"center",
-    borderRadius:14
+    borderRadius:12
     
   },
   Container3:{

@@ -1,20 +1,38 @@
-// src/OrderConfirmationScreen.js
 
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
-const OrderConfirmationScreen = ({ navigation }) => {
+import {
+    responsiveHeight,
+    responsiveFontSize,
+    responsiveWidth,
+    responsiveScreenFontSize,
+    
+  } from 'react-native-responsive-dimensions';
+  import LottieView from 'lottie-react-native';
+  import {useNavigation} from '@react-navigation/native';
+ export default function OrderConfirmationScreen() {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/checkmark.png')} style={styles.image} />
+            <View style={styles.AnimationContainer}>
+           <LottieView style={{height:"100%",width:"100%"}} 
+        
+        source={require("../assets/animations/thankyou.json")} 
+         autoPlay>
+        </LottieView>
+        </View>
+        <View style={styles.completeordertxt}>
+        
             <Text style={styles.title}>Your Order has been accepted</Text>
             <Text style={styles.subtitle}>Your items has been placed and is on its way to being processed</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TrackOrder')}>
-                <Text style={styles.buttonText}>Track Order</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('screen6')} style={styles.backhomebutton}>
+                <Text style={styles.backbtnText}>Back to home</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('screen6')}>
                 <Text style={styles.backToHome}>Back to home</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>  */}
+        </View>
         </View>
     );
 };
@@ -22,43 +40,62 @@ const OrderConfirmationScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
         backgroundColor: '#f0f4f8',
-        padding: 20,
+        
+    
     },
-    image: {
-        width: 100,
-        height: 100,
-        marginBottom: 20,
-    },
+    AnimationContainer:{
+        // backgroundColor:"red",
+         width:responsiveWidth(90),
+         alignSelf:'center',
+         height:responsiveHeight(20),
+         top:responsiveHeight(12)
+        },
+        completeordertxt:{
+            // backgroundColor:"red",
+            top:responsiveHeight(15),
+            alignItems:"center",
+            justifyContent:"center",
+            width:responsiveWidth(90),
+            alignSelf:"center"
+        },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        fontSize: 26,
+        fontWeight:"bold",
         textAlign: 'center',
-        marginBottom: 10,
+        color:"black",
+       
+
     },
     subtitle: {
         fontSize: 16,
+        fontWeight:"700",
         textAlign: 'center',
-        color: '#6c757d',
-        marginBottom: 40,
+        top:responsiveHeight(1)
+     
+        
     },
-    button: {
-        backgroundColor: '#28a745',
-        paddingVertical: 15,
-        paddingHorizontal: 40,
-        borderRadius: 25,
-        marginBottom: 20,
+    backhomebutton: {
+        backgroundColor: '#9c2bb3',
+       
+       top:responsiveHeight(4),
+       
+        width:responsiveWidth(90),
+        height:responsiveHeight(7),
+        alignItems:"center",
+        justifyContent:"center",
+        borderRadius: 16,
     },
-    buttonText: {
+    backbtnText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: 18,
+        fontWeight:"bold",
+   
+        
     },
-    backToHome: {
-        color: '#007bff',
-        fontSize: 16,
-    },
+   
 });
 
-export default OrderConfirmationScreen;
+

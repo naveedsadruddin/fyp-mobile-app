@@ -10,7 +10,7 @@ function ChatHeader({user}) {
   const navigation=useNavigation()
   return (
     <View style={style.bar}>
-     <TouchableOpacity onPress={()=>navigation.navigate("screen1")}>
+     <TouchableOpacity onPress={()=>navigation.navigate("screen13")}>
         <MaterialCommunityIcons name="chevron-left" size={40} color="white" />
         </TouchableOpacity>
       <View style={style.right}>

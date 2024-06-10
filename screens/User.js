@@ -36,10 +36,10 @@ function User() {
     const formattedTime = `${formatAMPM(hours, minutes)}`;
 
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('screen15', { order })}>
+      
       <View style={styles.orderItem}>
         <View style={styles.row}>
-          <Text style={styles.price}>Rs. {order.total}</Text>
+          <Text style={styles.price}>Total: Rs {order.total}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.info}>Date</Text>
@@ -55,12 +55,12 @@ function User() {
         </View>
         <View style={styles.row}>
           <Text style={styles.orderNumber}>Order # {order.id}</Text>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={() => navigation.navigate('screen15', { order })} style={styles.buttonviewdetail}>
             <Text style={styles.buttonText}>View Details</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </TouchableOpacity>
+    
     );
   };
 
@@ -89,16 +89,16 @@ function User() {
         </View>
         <ScrollView>
           <View style={style.boxcontainer}>
-            <View style={style.box}>
-              <Text style={{ fontSize: 18, fontWeight: "600", color: "blue" }}>29</Text>
+            {/* <View style={style.box}>
+              <Text style={{ fontSize: 18, fontWeight: "800", color: "#9c2bb3" }}>29</Text>
               <Text style={{ fontWeight: '400', fontSize: 19, color: "gray" }}>Wish list</Text>
-            </View>
+            </View> */}
             <View style={style.box}>
-              <Text style={{ fontSize: 18, fontWeight: "600", color: "blue" }}>1</Text>
-              <Text style={{ fontWeight: '400', fontSize: 19, color: "gray" }}>Total Orders</Text>
+              <Text style={{ fontSize: 18, fontWeight: "800", color: "#9c2bb3" }}>{orders.length}</Text>
+              <Text style={{ fontWeight: '800', fontSize: 19, color: "gray" }}>Total Orders</Text>
             </View>
           </View>
-          <Text style={{ fontSize: 26, fontWeight: "600", padding: 15, color: "black" }}>Recent Orders</Text>
+          <Text style={{ fontSize: 24, fontWeight: "500", padding: 15, color: "black" }}>Recent Orders</Text>
           <FlatList
             data={orders}
             keyExtractor={item => item.id.toString()}
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   price: {
-    color: '#007BFF',
+    color: '#9c2bb3',
     fontWeight: 'bold',
   },
   info: {
@@ -203,8 +203,8 @@ const styles = StyleSheet.create({
   orderNumber: {
     color: '#555',
   },
-  button: {
-    backgroundColor: '#007BFF',
+  buttonviewdetail: {
+    backgroundColor: '#9c2bb3',
     padding: 10,
     borderRadius: 5,
   },

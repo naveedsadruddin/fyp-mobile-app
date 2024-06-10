@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 function OrderDetail() {
+  const navigation = useNavigation();
   const route = useRoute();
   const { order } = route.params;
 //   console.log(order)
@@ -32,11 +33,12 @@ function OrderDetail() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <AntDesign name='arrowleft' size={24} color='white' onPress={() => navigation.goBack()} />
+        <TouchableOpacity>
+        <AntDesign name='arrowleft' size={24} color='white' onPress={() => navigation.navigate("screen11")} /></TouchableOpacity>
         <Text style={styles.headerText}>Order Summary</Text>
       </View>
       <View style={styles.orderSummary}>
-        <Text style={styles.restaurantName}>California Pizza</Text>
+        {/* <Text style={styles.restaurantName}>California Pizza</Text> */}
         <Text style={styles.orderId}>Order # {order.id}</Text>
         <Text style={styles.placedOn}>Placed on {"111"} - {"1222"}</Text>
         {products.map(product => (
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#9c2bb3',
     padding: 10,
   },
   headerText: {

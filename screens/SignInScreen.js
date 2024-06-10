@@ -178,14 +178,15 @@ const styles = StyleSheet.create({
     height:responsiveHeight(7),
     borderRadius:(13),
     top:responsiveHeight(1),
-    alignItems:"center",
-    justifyContent:"center"
+   justifyContent:"center",
+   alignItems:"center",
   },
  signin:{
  
   color:"#ffff",
   fontSize: responsiveScreenFontSize(2.5),
   fontWeight:"bold",
+  textAlign:"center"
   },
 
  register:{
