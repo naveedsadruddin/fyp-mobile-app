@@ -57,18 +57,18 @@ function ReelComponent({ reel, handleLike }) {
                 </Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.right} onPress={() => navigation.navigate('screen8', { id: reel.id})}>
+          <TouchableOpacity style={styles.right} onPress={() => navigation.navigate('screen8', { id: reel.product.id})}>
             <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }} >See Product</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.reactionbar}>
-          <TouchableOpacity onPress={toggleLikeButton} style={{alignItems:"center"}}>
+          {/* <TouchableOpacity onPress={toggleLikeButton} style={{alignItems:"center"}}>
             <AntDesign name={isLike ? 'heart' : 'hearto'} size={35} color={isLike? "red":"white"} />
             <Text style={{color:'white', fontSize: 16}}>{reel.liked}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => console.log('Comment')}>
             <FontAwesome name='comment' size={30} color='white' />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -95,7 +95,7 @@ function ReelC() {
     }
   }
   useEffect(() => {       
-    axios.get("http://192.168.2.107:8000/api/users/reels", config)
+    axios.get("http://13.49.252.90/api/users/reels", config)
      .then((response) => {
        console.log(response.data);
        console.log("useeffect")

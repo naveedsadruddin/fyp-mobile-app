@@ -17,7 +17,7 @@ function User() {
   };
   const navigation = useNavigation();
   useEffect(() => {
-    axios.get(`http://192.168.2.107:8000/api/users/orders`, config)
+    axios.get(`http://13.49.252.90/api/users/orders`, config)
       .then(response => {
         console.log(response.data);
         setOrders(response.data.orders);

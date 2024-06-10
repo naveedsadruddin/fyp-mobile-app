@@ -26,7 +26,7 @@ export default function SignInScreen() {
   const SignIn = () => {
     try {
       console.log('here')
-       axios.post("http://192.168.2.107:8000/api/user/login", data).then((response) =>{
+       axios.post("http://13.49.252.90/api/user/login", data).then((response) =>{
         console.log(response.data)
   
         if (response.data.error) {
@@ -95,7 +95,7 @@ export default function SignInScreen() {
         />
       </View>
       <Text style={{color:"red"}}>{error}</Text>
-      <Text style={styles.forgotpass}>Forgot password?</Text>
+      {/* <Text style={styles.forgotpass}>Forgot password?</Text> */}
         
 
           <TouchableOpacity style={styles.signinbutton}>

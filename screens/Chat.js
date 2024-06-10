@@ -21,14 +21,15 @@ import ChatHeader from './ChatHeader';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import axios from 'axios';
-const socket = io('http://192.168.2.107:4000');
+const socket = io('http://13.49.252.90:4000');
 const Chat = ({route}) => {
   const userId  =  useSelector(state => state.user.userData.user.id);
   const {name , chatId, receiver_id} = route.params;
   const [messages, setMessages] = useState([]);
   const setMessages1 = () => {
-  axios.get(`http://192.168.2.107:4000/messages/${chatId}`)
+  axios.get(`http://13.49.252.90:4000/app/messages/${chatId}`)
   .then((response) => {
+    console.log(response.data , 'here')
     const transformedMessages = response.data.map(msg => ({
       _id: msg.id,
       text: msg.message,
@@ -62,6 +63,7 @@ const Chat = ({route}) => {
   // });
   // }, []);
   useEffect(() => {
+
     setMessages1();
 
     const handleReceiveMessage = (newMessage) => {
@@ -85,7 +87,27 @@ const Chat = ({route}) => {
       socket.off(`receiveMessage-${chatId}`, handleReceiveMessage);
     };
   }, [chatId]);
-  
+
+  useEffect(() => {
+    console.log("here")
+    axios.get(`http://13.49.252.90:4000/app/messages/${chatId}`)
+    .then((response) => {
+      console.log(response.data , 'chatId', chatId)
+      const transformedMessages = response.data.map(msg => ({
+        _id: msg.id,
+        text: msg.message,
+        createdAt: new Date(msg.createdAt),
+        user: {
+          _id: msg.sender_id,
+        }
+      }));
+      setMessages(transformedMessages)
+      console.log(messages)  
+    })  .catch({
+
+    })
+  }, []);
+
   const onSend = (newMessages = []) => {
     console.log(newMessages)
     socket.emit('sendMessage', { sender_id: userId, receiver_id: receiver_id, message : newMessages[0].text });

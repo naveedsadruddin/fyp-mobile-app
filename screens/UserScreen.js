@@ -9,7 +9,7 @@ import Lowerbar from './Lowerbar';
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import axios from "axios";
-const socket = io('http://192.168.2.107:4000');
+const socket = io('http://13.49.252.90:4000');
 
 const UserScreen = () => {
   const navigation = useNavigation();
@@ -18,7 +18,7 @@ const UserScreen = () => {
   const [chatList, setChatList] = useState([]);
   const setChatList1 = () => {
     axios
-      .get(`http://192.168.2.107:4000/chat-listing/${userId}`)
+      .get(`http://13.49.252.90:4000/chat-listing/${userId}`)
       .then((response) => {
         console.log(response.data)
           setChatList(response.data);

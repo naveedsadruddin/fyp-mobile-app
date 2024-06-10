@@ -28,7 +28,7 @@ export default function Signup() {
   const navigation=useNavigation();
   const Signup = () => {
     console.log('here')
-    axios.post("http://192.168.2.107:8000/api/user/register", data).then((response) =>{
+    axios.post("http://13.49.252.90/api/user/register", data).then((response) =>{
       console.log('inside')
       console.log(response)
 
@@ -44,7 +44,7 @@ export default function Signup() {
          setError(error.response.data.data.message);
 
   })
-    // axios.post("http://192.168.2.107:8000:8001/api/user/register", data).then((response) =>{
+    // axios.post("http://13.49.252.90:8001/api/user/register", data).then((response) =>{
     //     console.log(response)
   
     //     if (response.data.error) {
@@ -58,7 +58,7 @@ export default function Signup() {
 
     // })
   }
-    //   const response =  axios.post("http://192.168.2.107:8000:8001/api/user/register", data);
+    //   const response =  axios.post("http://13.49.252.90:8001/api/user/register", data);
   
     //   if (response.data.error) {
     //     setError(response.data.data);

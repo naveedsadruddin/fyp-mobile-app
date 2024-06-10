@@ -56,7 +56,7 @@ function Homepage() {
   useEffect(() => {
     
     axios
-      .get('http://192.168.2.107:8000/api/users/products', config)
+      .get('http://13.49.252.90/api/users/products', config)
       .then(response => {
         console.log(response.data);
         setProducts(response.data.products);
@@ -214,15 +214,13 @@ function Homepage() {
 
         <View style={style.container4}>
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('screen7');
-            }}>
+            >
             <Text style={{fontWeight: '600', fontSize: 21}}>Products</Text>
           </TouchableOpacity>
           <View style={style.productcontainer}>{list1()}</View>
         </View>
 
-        <View style={style.container5}>
+        {/* <View style={style.container5}>
           <Text style={{fontWeight: '600', fontSize: 21}}>Reels</Text>
           <View style={style.reelcontent}>
             <TouchableOpacity onPress={() => navigation.navigate('reels')}>
@@ -245,7 +243,7 @@ function Homepage() {
               resizeMode={FastImage.resizeMode.contain}
             />
           </View>
-        </View>
+        </View> */}
 
         <View style={style.container6}>
           <Image

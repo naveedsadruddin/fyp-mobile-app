@@ -37,7 +37,7 @@ function Payment() {
       setError('Delivery Adress is required');
       return 1;
     }
-    axios.post(`http://192.168.2.107:8000/api/users/orders`, cart , config)
+    axios.post(`http://13.49.252.90/api/users/orders`, cart , config)
     .then((response) => {
       console.log(response.data.message)
       navigation.navigate("screen16")

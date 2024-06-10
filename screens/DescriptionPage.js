@@ -36,6 +36,16 @@ function Updatedpage({route }) {
       price : product?.sale_price  
     }))
   }
+  const handleBuyNow = () =>{
+    dispatch(addItem({
+      id : product?.id,
+      quantity : 1,
+      name : product?.name,
+      image : product?.images[0]?.image_uri,
+      price : product?.sale_price  
+    }))
+    navigation.navigate('screen9')
+  }
   const removeFromCart = () =>{
     dispatch(removeItem(product.id))
   }
@@ -45,7 +55,7 @@ function Updatedpage({route }) {
     }
   }
   useEffect(() => {       
-    axios.get(`http://192.168.2.107:8000/api/users/products/${id}`, config)
+    axios.get(`http://13.49.252.90/api/users/products/${id}`, config)
      .then((response) => {
       console.log(response.data.product)
        setProduct(response.data.product);
@@ -105,7 +115,7 @@ function Updatedpage({route }) {
                          {product?.description}
                      </Text>
                    <View style={style.btnbox}>
-                     <TouchableOpacity style={style.btn} onPress={()=>navigation.navigate("screen9")}><Text style={{color:"white",fontWeight:"700"}}>Buy Now</Text></TouchableOpacity>
+                     <TouchableOpacity style={style.btn} onPress={handleBuyNow}><Text style={{color:"white",fontWeight:"700"}}>Buy Now</Text></TouchableOpacity>
                      <TouchableOpacity onPress={addToCart} style={style.btn}><Text style={{color:"white",fontWeight:"700"}}>Add to cart</Text></TouchableOpacity>
 
                    </View>
