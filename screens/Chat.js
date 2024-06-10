@@ -45,23 +45,47 @@ const Chat = ({route}) => {
   });
 
 }
+  // useEffect(() => {
+  //   setMessages1()
+  //   socket.on(`receiveMessage-${chatId}`, (newMessage) => { 
+  //     const newMessages ={
+  //                 _id: Math.round(Math.random() * 1000000),
+  //                 text: newMessage.message,
+  //                 createdAt: newMessage.date,
+  //                 user: {
+  //                   _id: newMessage.sender_id,
+  //                 },
+  //               };
+  //     setMessages(previousMessages =>
+  //    GiftedChat.append(previousMessages, newMessages),
+  //    );
+  // });
+  // }, []);
   useEffect(() => {
-    setMessages1()
-    socket.on(`receiveMessage-${chatId}`, (newMessage) => { 
-      const newMessages ={
-                  _id: Math.round(Math.random() * 1000000),
-                  text: newMessage.message,
-                  createdAt: newMessage.date,
-                  user: {
-                    _id: newMessage.sender_id,
-                  },
-                };
-      setMessages(previousMessages =>
-     GiftedChat.append(previousMessages, newMessages),
-     );
-  });
-  }, []);
+    setMessages1();
 
+    const handleReceiveMessage = (newMessage) => {
+      const newMessages = {
+        _id: Math.round(Math.random() * 1000000),
+        text: newMessage.message,
+        createdAt: new Date(newMessage.date),
+        user: {
+          _id: newMessage.sender_id,
+        },
+      };
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, newMessages),
+      );
+    };
+
+    socket.on(`receiveMessage-${chatId}`, handleReceiveMessage);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      socket.off(`receiveMessage-${chatId}`, handleReceiveMessage);
+    };
+  }, [chatId]);
+  
   const onSend = (newMessages = []) => {
     console.log(newMessages)
     socket.emit('sendMessage', { sender_id: userId, receiver_id: receiver_id, message : newMessages[0].text });

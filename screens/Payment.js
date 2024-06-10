@@ -15,6 +15,8 @@ import { useSelector } from 'react-redux';
 
 function Payment() {
     const [isAddress, setIsAddress]=useState(false);
+    const [address, setAddress]=useState(false);
+    const [error, setError]=useState(false);
     
     const toggleAddress=()=>{
         setIsAddress(!isAddress)
@@ -31,6 +33,10 @@ function Payment() {
   }
   console.log(config)
   const handlePlaceOrder = () => {
+    if(address == ''){
+      setError('Delivery Adress is required');
+      return 1;
+    }
     axios.post(`http://192.168.2.107:8000/api/users/orders`, cart , config)
     .then((response) => {
       console.log(response.data.message)
@@ -53,7 +59,8 @@ function Payment() {
                <TouchableOpacity onPress={toggleAddress}><AntDesign name='pluscircle' size={30} color='#9c2bb3'/></TouchableOpacity>
                 
             </View>
-            {isAddress? <TextInput style={style.addresInput}/>:null }
+            {isAddress? <TextInput style={style.addresInput} onChange={(event) => {setAddress(event.target.value)}}/>:null }
+            <Text style={{color:"red"}}> {error}</Text>
         </View>
             <Text style={style.paymenttxt}>Payment Method</Text>
         <View style={style.addressparent}>

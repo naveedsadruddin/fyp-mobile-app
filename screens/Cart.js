@@ -59,11 +59,11 @@ const Cart = () => {
       <View style={style.lowerContainer}>
         <View style={style.totalPrice}>
           <Text style={{ fontSize: 18, fontWeight: "500", color: "black" }}>Delivery Charges</Text>
-          <Text style={{ fontSize: 18, fontWeight: "bold", color: "black" }}>Rs 200</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: "black" }}>Rs {cart.totalAmount > 0 ? 200 : 0}</Text>
         </View>
         <View style={style.totalPrice}>
           <Text style={{ fontSize: 18, fontWeight: "500", color: "black" }}>Total Price</Text>
-          <Text style={{ fontSize: 18, fontWeight: "bold", color: "black" }}>Rs {cart.totalAmount + 200}</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: "black" }}>Rs {cart.totalAmount > 0 ?cart.totalAmount + 200 : 0}</Text>
         </View>
         <TouchableOpacity style={style.orderButton} onPress={() => navigation.navigate("screen12")}>
           <Text style={{ alignSelf: 'center', color: "white", fontSize: 19, fontWeight: "700" }}>Review Payment & Address</Text>
