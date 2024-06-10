@@ -32,6 +32,7 @@ import Comment from "./screens/Comment"
 import { Provider } from 'react-redux';
 import OrderDetail from './screens/OrderDetail';
 import store from './store'; 
+import OrderConfirmationScreen from './screens/OrderConfirmation';
 
 
 function App() {
@@ -52,9 +53,10 @@ function App() {
         <Stack.Screen name='screen10' component={ReelC} options={{headerShown:false}}/>
         <Stack.Screen name='screen11' component={User} options={{headerShown:false}}/>
         <Stack.Screen name='screen12' component={Payment} options={{headerShown:false}}/>
-        <Stack.Screen name='screen13' component={UserScreen} options={{headerShown:false}}/>
-        <Stack.Screen name='screen14' component={Chat} options={{headerShown:false}}/>
+         <Stack.Screen name='screen13' component={UserScreen} options={{headerShown:false}}/>
+         <Stack.Screen name='screen14' component={Chat} options={{headerShown:false}}/>
         <Stack.Screen name='screen15' component={OrderDetail} options={{headerShown:false}}/>
+        <Stack.Screen name='screen16' component={OrderConfirmationScreen} options={{headerShown:false}}/>
     </Stack.Navigator>
    {/* <Error/> */}
    {/* <User/> */}
@@ -64,7 +66,7 @@ function App() {
     {/* <Cart/> */}
     {/* <Chat/> */}
     {/* <Cartcomponent/> */}
-    {/* <UserScreen/> */}
+    {/* <OrderConfirmationScreen/> */}
     {/* <Homepage/> */}
     {/* <Comment/> */}
     {/* <EditProfile/> */}

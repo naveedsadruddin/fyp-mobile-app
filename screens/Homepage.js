@@ -4,6 +4,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 import axios from 'axios';
 import {
   View,
@@ -123,13 +124,23 @@ function Homepage() {
             />
           </View>
           <View style={style.container1IconsContainer}>
-            <SimpleLineIcons name="heart" size={25} color="gray" />
+            {/* <SimpleLineIcons name="heart" size={25} color="gray" />
             <SimpleLineIcons
               name="bell"
               size={25}
               color="gray"
               style={{paddingLeft: 23}}
+            /> */}
+            <TouchableOpacity  onPress={() => navigation.navigate('screen5')} style={style.logoutbtn}>
+            <SimpleLineIcons
+              name="logout"
+              size={15}
+              color="gray"
+              
             />
+              <Text style={style.logouttxt}>Logout</Text>
+           
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -141,7 +152,7 @@ function Homepage() {
           </View>
         </View>
 
-        <View style={style.container3}>
+        {/* <View style={style.container3}>
           <Text style={{fontWeight: '600', fontSize: 21}}>Category</Text>
           <View style={style.buttonbox}>
             <View style={style.buttonWrapper}>
@@ -199,7 +210,7 @@ function Homepage() {
               <Text style={style.categoryName}>Payment</Text>
             </View>
           </View>
-        </View>
+        </View> */}
 
         <View style={style.container4}>
           <TouchableOpacity
@@ -276,7 +287,29 @@ const style = StyleSheet.create({
     marginLeft: 23,
     top: responsiveHeight(3.5),
   },
-
+  logoutbtn:{
+    height:responsiveHeight(5.5),
+    width:responsiveWidth(22),
+    right:1.5,
+    bottom:responsiveHeight(1),
+    flexDirection:"row",
+    borderRadius: 7,
+    backgroundColor: 'transparent',
+    justifyContent:"space-evenly",
+    alignItems:"center",
+    borderWidth:0.9,
+    borderColor:"gray",
+    // elevation: 5,
+    // shadowColor: '#5C61F4',
+    // shadowOffset: {width: 0, height: 3},
+    // shadowOpacity: 0.1,
+    // shadowRadius: 3,
+  },
+  logouttxt:{
+    color:"gray",
+    fontWeight:"500",
+    fontSize:18
+  },
   container2: {
     width: responsiveWidth(90),
     alignSelf: 'center',

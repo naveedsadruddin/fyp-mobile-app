@@ -181,6 +181,7 @@ const style = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 30,
     elevation: 8,
+    bottom:responsiveHeight(7),
   },
 
   totalPrice: {
@@ -198,7 +199,8 @@ const style = StyleSheet.create({
   },
 
   footer: {
-    height: responsiveHeight(5)
+    height: responsiveHeight(5),
+   
   },
 })
 
