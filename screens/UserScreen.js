@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import { useNavigation } from '@react-navigation/native';
 import Lowerbar from './Lowerbar';
@@ -45,23 +46,22 @@ const UserScreen = () => {
   useEffect(() => {
     setChatList1();
     joinChat();
-    socket.on(`chat-${userId}`, (newMessage) => {
+    socket.on(`chat-${userId}`, () => {
       setChatList1();
     });
   }, []);
 
-  const filteredResults = searchResults.filter(searchResult =>
-    chatList.some(chat => chat.participant_user_id === searchResult.id)
-  );
-
-  // const nonMatchingChatList = chatList.filter(chat =>
-  //   !searchResults.some(searchResult => searchResult.id === chat.participant_user_id)
-  // );
+  const filteredChatList = searchResults.length > 0
+    ? chatList.filter(chat => searchResults.some(user => user.id === chat.participant_user_id))
+    : chatList;
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
         <Text style={styles.chattxt}>Chats</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("screen17")}>
+          <AntDesign name="pluscircle" size={33} color="#9c2bb3" />
+        </TouchableOpacity>
       </View>
       <View style={styles.searchBar}>
         <TouchableOpacity>
@@ -75,35 +75,20 @@ const UserScreen = () => {
         />
       </View>
       <ScrollView>
-        {filteredResults.length > 0 ?
-          filteredResults.map(chat => (
-            <TouchableOpacity
-              style={styles.userContainer}
-              onPress={() => navigation.navigate("screen14", { chatId: chat.id, receiver_id: chat.participant_user_id, name: chat.participant_user_name })}
-              key={chat.id}
-            >
-              <Image source={profileImage} style={styles.profileImage} />
-              <View style={styles.textContainer}>
-                <Text style={styles.userName}>{chat.name}</Text>
-              </View>
-            </TouchableOpacity>
-          ))
-          :
-          chatList.map(chat => (
-            <TouchableOpacity
-              style={styles.userContainer}
-              onPress={() => navigation.navigate("screen14", { chatId: chat.id, receiver_id: chat.participant_user_id, name: chat.participant_user_name })}
-              key={chat.id}
-            >
-              <Image source={profileImage} style={styles.profileImage} />
-              <View style={styles.textContainer}>
-                <Text style={styles.userName}>{chat.participant_user_name}</Text>
-                <Text style={styles.messageTime}>{chat.time}</Text>
-                <Text style={styles.messageText}>{chat.last_message}</Text>
-              </View>
-            </TouchableOpacity>
-          ))
-        }
+        {filteredChatList.map(chat => (
+          <TouchableOpacity
+            style={styles.userContainer}
+            onPress={() => navigation.navigate("screen14", { chatId: chat.id, receiver_id: chat.participant_user_id, name: chat.participant_user_name })}
+            key={chat.id}
+          >
+            <Image source={profileImage} style={styles.profileImage} />
+            <View style={styles.textContainer}>
+              <Text style={styles.userName}>{chat.participant_user_name}</Text>
+              <Text style={styles.messageTime}>{chat.time}</Text>
+              <Text style={styles.messageText}>{chat.last_message}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
       <Lowerbar />
     </View>
@@ -147,9 +132,10 @@ const styles = StyleSheet.create({
   },
   header: {
     width: responsiveWidth(100),
-    alignSelf: "center",
-    justifyContent: "center",
-    padding: 16
+    padding: 16,
+    flexDirection: 'row',
+    alignItems:'center',
+    justifyContent: 'space-between',
   },
   chattxt: {
     fontSize: 30,

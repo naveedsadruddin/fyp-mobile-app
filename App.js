@@ -33,6 +33,7 @@ import { Provider } from 'react-redux';
 import OrderDetail from './screens/OrderDetail';
 import store from './store'; 
 import OrderConfirmationScreen from './screens/OrderConfirmation';
+import NewChat from './screens/newChat';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
          <Stack.Screen name='screen14' component={Chat} options={{headerShown:false}}/>
         <Stack.Screen name='screen15' component={OrderDetail} options={{headerShown:false}}/>
         <Stack.Screen name='screen16' component={OrderConfirmationScreen} options={{headerShown:false}}/>
+        <Stack.Screen name='screen17' component={NewChat} options={{headerShown:false}}/>
     </Stack.Navigator>
    {/* <Error/> */}
    {/* <User/> */}
